@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Professional Invoice Maker</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<!-- Add Katibeh font link -->
+<link href="https://fonts.googleapis.com/css2?family=Katibeh&display=swap" rel="stylesheet">
+<style>
+/* Your CSS styles here */
+body {
+    font-family: 'Katibeh', sans-serif; /* Change font-family to Katibeh */
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.invoice-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.invoice-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.input-group label {
+    flex: 1;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+.input-group input[type="text"],
+.input-group input[type="number"],
+.input-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="number"]:focus,
+.input-group select:focus {
+    border-color: #007bff;
+}
+
+.invoice-items {
+    margin-bottom: 20px;
+}
+
+.item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.item select,
+.item input[type="number"],
+.item input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+    flex: 1; /* Adjusted width for smaller items */
+    margin-right: 10px;
+    box-sizing: border-box;
+    max-width: 60px; /* Set max-width to 60px */
+}
+
+.item select.item-dropdown {
+    width: auto; /* Set width to auto for item dropdown */
+    max-width: 200px; /* Set max-width to 100px for item dropdown */
+}
+
+.remove-item {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+    color: #d9534f;
+    transition: color 0.3s;
+    align-self: center;
+}
+
+.remove-item:hover {
+    color: #c9302c;
+}
+
+.total {
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.vat {
+    font-size: 16px;
+    text-align: right;
+    color: #555;
+}
+
+.net-total {
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.print-invoice {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.print-invoice:hover {
+    background-color: #218838;
+}
+
+@media print {
+    .print-invoice {
+        display: none;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Logo styling */
+.logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-width: 300px; /* Set max-width for logo */
+    height: auto;
+}
+
+/* Signature styling */
+.signature-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.signature-left {
+    flex: 1;
+    text-align: left; /* Align left for head management signature */
+}
+
+.signature-right {
+    flex: 1;
+    text-align: right; /* Align right for customer signature */
+}
+
+.signature {
+    margin-top: 10px;
+    border-top: 1px solid #000;
+    padding-top: 10px;
+}
+
+.signature p {
+    margin: 0; /* Remove default margin */
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Logo Section -->
+    <div class="logo-container">
+        <img class="logo" src="https://blogger.googleusercontent.com/img/a/AVvXsEiETzp-kdKhzKgIGgxKlZuD9wS1fzP45qG8CA_ucZg92AiPtYwkf481RikE9r3ZNSjiqy1EDJlZFdTBqkdTAejBtInvJ-4ALgkAVU5rCJqxNuNhf3QMilmKK7IKqieeFBigorvirf1N9NcjaHmUcFVz3Q5ziWDi6CaHifuuEvJIDcd16qnnovCnsuivcPg=w300" alt="Logo">
+    </div>
+    <!-- End of Logo Section -->
+    <div class="invoice-header">
+        <h2></h2>
+    </div>
+    <div class="input-group">
+        <label for="company">Company Name:</label>
+        <input type="text" id="company" name="company" placeholder="Enter company name..." required>
+        <label for="gdn-no">GDN Number:</label>
+        <input type="text" id="gdn-no" name="gdn-no">
+        <label for="contact-no">Contact No:</label>
+        <input type="text" id="contact-no" name="contact-no">
+    </div>
+    <div class="input-group">
+        <label for="customer-address">Customer Address:</label>
+        <input type="text" id="customer-address" name="customer-address" placeholder="Enter customer address..." required>
+    </div>
+    <div class="input-group">
+        <label for="serial">Serial:</label> <!-- Add Serial label -->
+        <label for="item-name">Item Name:</label>
+        <label for="unit">_______________________</label>
+        <label for="unit">Unit:</label>
+        <label for="price">Price:</label>
+        <label for="pack-size">Pack Size:</label> <!-- Add TP Amount label -->
+        <label for="bonus">Bonus:</label>
+        <label for="tp-amount">TP Amount:</label> <!-- Add Pack Size label -->
+        <label for="net-amount">Net Amount:</label> <!-- Add Net Amount label -->
+        <label for="discount">Discount (%):</label>
+        <label for="opt11">Option11:</label>
+        <label for="opt12">Option12:</label>
+        <label for="opt13">Option13:</label>
+    </div>
+    <div class="invoice-items">
+        <div class="item">
+            <input type="text" class="serial" value="1" readonly>
+            <select class="item-dropdown">
+                <option value="1" data-pack-size="4*5" data-price="150" data-tp-amount="70" data-net-amount="180">Select Drug</option>
+                <option value="2" data-pack-size="4*5" data-price="150" data-tp-amount="70" data-net-amount="180">Recofast CV 500mg(4*5)</option>
+                <option value="3" data-pack-size="4*7" data-price="180" data-tp-amount="60" data-net-amount="140">Oryx 250mg(4*7)</option>
+            </select>
+            <input type="number" class="quantity" value="1">
+            <input type="number" class="price" value="0" readonly>
+            <input type="text" class="pack-size" value="" placeholder="Pack Size">
+            <input type="number" class="bonus" value="" placeholder="Bonus">
+            <input type="number" class="tp-amount" value="" placeholder="TP Amount">
+            <input type="number" class="net-amount" value="" placeholder="Net Amount">
+            <input type="number" class="discount-input" value="0">
+            <input type="number" class="opt11" value="" placeholder="opt11">
+            <input type="number" class="opt12" value="" placeholder="opt12">
+            <input type="number" class="opt13" value="" placeholder="opt13">
+            <button class="remove-item">📛</button>
+        </div>
+    </div>
+    <button class="add-item">Add Item</button>
+    <div class="total">Total: BDT <span class="total-amount">0.00</span></div>
+    <div class="vat">VAT: BDT <span class="vat-amount">0.00</span></div>
+    <div class="net-total">Net Total: BDT <span class="net-total-amount">0.00</span></div>
+    <button class="print-invoice">Print Invoice</button>
+    <div class="signature-container">
+        <div class="signature-left">
+            <p>Head Management Signature:</p>
+            <div class="signature"></div>
+        </div>
+        <div class="signature-right">
+            <p>Customer Signature:</p>
+            <div class="signature"></div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+$(document).ready(function () {
+    // Initialize Select2 for item dropdown
+    $('.item-dropdown').select2();
+
+    // Set initial values based on selected item
+    $('.item-dropdown').change(function () {
+        var selectedOption = $(this).find('option:selected');
+        var packSize = selectedOption.data('pack-size');
+        var price = selectedOption.data('price');
+        var tpAmount = selectedOption.data('tp-amount');
+        var netAmount = selectedOption.data('net-amount');
+        $(this).closest('.item').find('.pack-size').val(packSize);
+        $(this).closest('.item').find('.price').val(price);
+        $(this).closest('.item').find('.tp-amount').val(tpAmount);
+        $(this).closest('.item').find('.net-amount').val(netAmount);
+    });
+
+    // Add item
+    $('.add-item').click(function () {
+        var newItem = $('<div class="item">' +
+            '<input type="text" class="serial" value="' + ($('.item').length + 1) + '" readonly>' +
+            '<select class="item-dropdown">' +
+            '<option value="1" data-pack-size="4*5" data-price="150" data-tp-amount="70" data-net-amount="180">Select Drug</option>' +
+            '<option value="2" data-pack-size="4*5" data-price="150" data-tp-amount="70" data-net-amount="180">Recofast CV 500mg(4*5)</option>' +
+            '<option value="3" data-pack-size="4*7" data-price="180" data-tp-amount="60" data-net-amount="140">Oryx 250mg(4*7)</option>' +
+            '</select>' +
+            '<input type="number" class="quantity" value="1">' +
+            '<input type="number" class="price" value="0" readonly>' +
+            '<input type="text" class="pack-size" value="" placeholder="Pack Size">' +
+            '<input type="number" class="bonus" value="" placeholder="Bonus">' +
+            '<input type="number" class="tp-amount" value="" placeholder="TP Amount">' +
+            '<input type="number" class="net-amount" value="" placeholder="Net Amount">' +
+            '<input type="number" class="discount-input" value="0">' +
+            '<input type="number" class="opt11" value="" placeholder="opt11">' +
+            '<input type="number" class="opt12" value="" placeholder="opt12">' +
+            '<input type="number" class="opt13" value="" placeholder="opt13">' +
+            '<button class="remove-item">📛</button>' +
+            '</div>');
+        $('.invoice-items').append(newItem);
+        // Initialize Select2 for new item dropdown
+        newItem.find('.item-dropdown').select2();
+    });
+
+    // Remove item
+    $(document).on('click', '.remove-item', function () {
+        $(this).closest('.item').remove();
+        updateTotal(); // Update total when removing item
+    });
+
+    // Calculate total, VAT, and net total
+    function updateTotal() {
+        var total = 0;
+        var vatTotal = 0;
+        var netTotal = 0; // Initialize net total
+        $('.item').each(function () {
+            var quantity = $(this).find('.quantity').val();
+            var price = $(this).find('.price').val();
+            var discount = $(this).find('.discount-input').val();
+            var discountedPrice = price * (1 - discount / 100);
+            var vat = (discountedPrice * 0.15) * quantity; // Calculate VAT separately for each item
+            var totalPrice = (discountedPrice + vat) * quantity;
+            total += totalPrice;
+            vatTotal += vat;
+            var netAmount = $(this).find('.net-amount').val();
+            netTotal += parseFloat(netAmount); // Add net amount to net total
+        });
+        $('.total-amount').text(total.toFixed(2));
+        $('.vat-amount').text(vatTotal.toFixed(2));
+        $('.net-total-amount').text(netTotal.toFixed(2)); // Display net total
+    }
+
+    // Update total on input change
+    $(document).on('input', '.quantity, .price, .discount-input', function () {
+        updateTotal();
+    });
+
+    // Set price and calculate total when item is selected
+    $(document).on('change', '.item-dropdown', function () {
+        var selectedOption = $(this).find('option:selected');
+        var packSize = selectedOption.data('pack-size');
+        var price = selectedOption.data('price');
+        var tpAmount = selectedOption.data('tp-amount');
+        var netAmount = selectedOption.data('net-amount');
+        $(this).closest('.item').find('.pack-size').val(packSize);
+        $(this).closest('.item').find('.price').val(price);
+        $(this).closest('.item').find('.tp-amount').val(tpAmount);
+        $(this).closest('.item').find('.net-amount').val(netAmount);
+        updateTotal();
+    });
+
+    // Print invoice
+    $('.print-invoice').click(function () {
+        window.print();
+    });
+});
+</script>
+</body>
+</html>
